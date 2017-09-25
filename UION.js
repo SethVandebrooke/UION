@@ -1,38 +1,43 @@
-function UI(name, components, style) {
+function UI(name, components, style, cssvars) {
   this.name = name;
   this.components = components;
-  if (!window.AJAX) {
-    window.AJAX = {
-    	get: function(url,onGet) {
-        	var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                onGet(this.responseText);
-              }
-            };
-            xhttp.open("GET", url, true);
-            xhttp.send();
-
-        },
-        post: function(url,onPost,header,data) {
-        	var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                onPost(this.responseText);
-              }
-            };
-            xhttp.open("POST", url, true);
-            if (typeof header == "string") {
-                xhttp.setRequestHeader(header);
-            } else if (Array.isArray(header)) {
-                for (var i = 0; i < header.length; i++) {
-                    xhttp.setRequestHeader(header[i]);
-                }
+  window.AJAX = {
+    get: function(url,onGet) {
+      var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            onGet(this.responseText);
+          }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    },
+    post: function(url,onPost,header,data) {
+      var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            onPost(this.responseText);
+          }
+        };
+        xhttp.open("POST", url, true);
+        if (typeof header == "string") {
+            xhttp.setRequestHeader(header);
+        } else if (Array.isArray(header)) {
+            for (var i = 0; i < header.length; i++) {
+                xhttp.setRequestHeader(header[i]);
             }
-            xhttp.send(data?data:null);
         }
-    };
-  }
+        xhttp.send(data?data:null);
+    },
+    load: function(url,element) {
+      this.get(url,function(a){
+        element.innerHTML = a;
+      });
+    }
+  };
+  this.setComponent = (name,component) => {
+    this.components[name] = component;
+  };
   this.processComponent = (component, parameters) => {
     var comp = ([]).concat(component);
     for (var k = 0; k < comp.length; k++) {
@@ -102,6 +107,10 @@ function UI(name, components, style) {
     return this;
   };
   this.build = (config,target) => {
+    target = target?target:document.getElementById("main")||document.body;
+    typeof(this.components[config.COMPONENT]) !== undefined ?
+      config.componentName = config.COMPONENT : config.tagName = config.COMPONENT;
+    delete config.COMPONENT;
     for (var k = 0; k < config.length; k++) {
       if (!config[k].componentName) {
         this.renderHTML([config[k]],target);
@@ -111,21 +120,22 @@ function UI(name, components, style) {
     }
     return this;
   };
-  this.style = new Style(name,style,{
-    primary: "lightblue",
-    secondary: "gray"
-  });
+  this.style = new Style(name,style,cssvars);
 };
 function Style(name, csso, vars) {
   this.name = name;
   this.vars = vars || {};
   this.csso = csso;
   this.generateCSS = style => {
-    var selector, css = "", attr;
+    var selector, css = "", attr, a, v = this.vars;
     for (selector in style) {
       css+="\n"+selector+" {";
       for (attr in style[selector]) {
-        css+="\n\t"+attr+": "+style[selector][attr]+";";
+        a=style[selector][attr];
+        if (typeof a == "string") {
+          a=a.includes('$')?v[a.replace('$','')]:a;
+          css+="\n\t"+attr+": "++";";
+        }
       }
       css+="\n}"
     }
