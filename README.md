@@ -159,6 +159,16 @@ For example:
 //Renders: <div id="mydiv"></div>
 ```
 
+The only preset attribute besides COMPONENT is text.
+Text allows you to define the innerHTML or "text content" of an element.
+```js
+{
+  COMPONENT : "h1",
+  text : "Hello world!"
+}
+//Renders: <h1>Hello world!</h1>
+```
+
 ## Component Parameters
 
 When rendering a component you can use parameters much like your component is a function.
