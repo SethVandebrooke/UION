@@ -133,7 +133,7 @@ The constructor also appends a AJAX object to the global window object.
 Method Name | Parameters | Parameter Types | Description
 ----------- | ---------- | --------------- | -----------
 get | url, callback | string, function | Makes an ajax GET call to the given url and runs the callback function on success with a single parameter (the call response).
-post | url, callback, header, data | string, function, array||string, object | Makes an ajax POST call to the given url and runs the callback function on success with a single parameter (the call response).
+post | url, callback, header, data | string, function, array or string, object | Makes an ajax POST call to the given url and runs the callback function on success with a single parameter (the call response).
 load | url, element | string, DOM element | Loads html from the given file into the given DOM element.
 
 ## UION Syntax
