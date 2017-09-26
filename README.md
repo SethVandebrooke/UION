@@ -159,7 +159,7 @@ For example:
 //Renders: <div id="mydiv"></div>
 ```
 
-The only preset attribute besides COMPONENT is text.
+The only preset attributes besides COMPONENT are "text" and "children".
 Text allows you to define the innerHTML or "text content" of an element.
 ```js
 {
@@ -169,10 +169,24 @@ Text allows you to define the innerHTML or "text content" of an element.
 //Renders: <h1>Hello world!</h1>
 ```
 
+The children attribute is always an array of component objects:
+```js
+{
+  COMPONENT : "div",
+  children : [
+    { COMPONENT : "p", text : "Hello" },
+    { COMPONENT : "p", text : "World" }
+  ]
+}
+//Renders: <div> <p>Hello</p> <p>World</p> </div>
+```
+
+
+
 ## Component Parameters
 
 When rendering a component you can use parameters much like your component is a function.
-Parameter placeholders always start with a $ sign, to indecate that it is a placeholder, which is followed by the name of the parameter.
+Parameter placeholders always start with a $ sign, to indicate that it is a placeholder, which is followed by the name of the parameter.
 For example, consider the following component configuration:
 ```js
 var myui = new UI("myui", {
