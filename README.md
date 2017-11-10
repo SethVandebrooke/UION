@@ -3,7 +3,7 @@
 UION is a constructor and syntax for defining, styling, rendering and maintaining user interfaces. 
 
 ### Perks
- - Lightweight: 5Kb
+ - Lightweight: 5Kb (3kb minified)
  - Portable: it can easily convert to and from JSON.
  - Empowering: real time UI updating, cross browser css variables, reusable components, and fully extendable.
 
